@@ -1,0 +1,7 @@
+
+datadir=/home/sergembela/anaconda3/envs/cdr_telecom/share
+xkb_base=/home/sergembela/anaconda3/envs/cdr_telecom/share/X11/xkb
+
+Name: XKeyboardConfig
+Description: X Keyboard configuration data
+Version: 2.44

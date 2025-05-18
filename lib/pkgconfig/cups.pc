@@ -1,0 +1,29 @@
+#
+# CUPS pkg-config file
+#
+# Copyright © 2021-2022 by OpenPrinting.
+#
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
+#
+
+prefix=/home/sergembela/anaconda3/envs/cdr_telecom
+exec_prefix=/home/sergembela/anaconda3/envs/cdr_telecom
+includedir=/home/sergembela/anaconda3/envs/cdr_telecom/include
+libdir=/home/sergembela/anaconda3/envs/cdr_telecom/lib
+
+cups_api_version="2.4"
+cups_build="cups-2.4.2"
+cups_datadir=/home/sergembela/anaconda3/envs/cdr_telecom/share/cups
+cups_serverbin=/home/sergembela/anaconda3/envs/cdr_telecom/lib/cups
+cups_serverroot=/home/sergembela/anaconda3/envs/cdr_telecom/etc/cups
+
+Name: CUPS
+Description: CUPS API Library
+Version: 2.4.2
+URL: https://openprinting.github.io/cups/
+Cflags:  -I/home/sergembela/anaconda3/envs/cdr_telecom/include
+Libs: -L/home/sergembela/anaconda3/envs/cdr_telecom/lib -lcups
+
+Requires.private:  openssl
+Libs.private:  -lz

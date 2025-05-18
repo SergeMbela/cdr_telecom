@@ -1,0 +1,12 @@
+prefix=/home/sergembela/anaconda3/envs/cdr_telecom
+exec_prefix=${prefix}
+libdir=/home/sergembela/anaconda3/envs/cdr_telecom/lib
+includedir=/home/sergembela/anaconda3/envs/cdr_telecom/include
+
+Name: absl_time_zone
+Description: Abseil time_zone library
+URL: https://abseil.io/
+Version: 20250127
+Requires:
+Libs: -L${libdir}  -labsl_time_zone 
+Cflags: -I${includedir} -DNOMINMAX

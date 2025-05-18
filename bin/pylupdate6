@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /home/sergembela/anaconda3/envs/cdr_telecom/bin/python -m PyQt6.lupdate.pylupdate ${1+"$@"}

@@ -1,0 +1,14 @@
+prefix=/home/sergembela/anaconda3/envs/cdr_telecom
+exec_prefix=/home/sergembela/anaconda3/envs/cdr_telecom
+libdir=/home/sergembela/anaconda3/envs/cdr_telecom/lib
+includedir=/home/sergembela/anaconda3/envs/cdr_telecom/include
+
+Name: FreeType 2
+URL: https://freetype.org
+Description: A free, high-quality, and portable font engine.
+Version: 26.2.20
+Requires: 
+Requires.private: zlib, libpng
+Libs: -L/home/sergembela/anaconda3/envs/cdr_telecom/lib -lfreetype
+Libs.private: 
+Cflags: -I${includedir}/freetype2
