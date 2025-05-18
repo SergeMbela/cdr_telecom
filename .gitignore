@@ -55,6 +55,9 @@ conda-meta/
 *.lock
 *.yaml
 *.yml
+x86_64-conda-linux-gnu/
+x86_64-conda_cos7-linux-gnu/
+aarch64-conda-linux-gnu/
 
 # Anaconda Navigator state files
 .anaconda/
