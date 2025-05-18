@@ -115,3 +115,9 @@ Thumbs.db
 *.rej
 *.patch
 *.diff
+# Conda build/platform-specific environments
+x86_64-conda-linux-gnu/
+
+x86_64-conda-linux-gnu/
+aarch64-conda-linux-gnu/
+
