@@ -230,3 +230,52 @@ wandb/
 mlruns/
 runs/
 
+# -----------------------
+# Additional Large Files
+# -----------------------
+*.7z
+*.zip
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.iso
+*.img
+*.bin
+*.exe
+*.msi
+*.apk
+*.dmg
+*.vmdk
+*.vdi
+*.qcow2
+*.box
+
+# -----------------------
+# Bin Directory
+# -----------------------
+bin/
+
+# -----------------------
+# Unnecessary System/Environment Files and Folders
+# -----------------------
+conda-meta/
+lib/
+share/
+etc/
+include/
+libexec/
+compiler_compat/
+var/
+sbin/
+cmake/
+man/
+licensing/
+ssl/
+x86_64-conda-linux-gnu/
+x86_64-conda_cos7-linux-gnu/
+etl_checkpoint.json
+mysqlrouter-log-rotate
+LICENSE.router
+README.router
+
