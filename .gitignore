@@ -19,6 +19,8 @@ ENV/
 *.spec
 x86_64-conda_cos7-linux-gnu
 x86_64-conda-linux-gnu
+x86*/
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -123,4 +125,108 @@ x86_64-conda-linux-gnu/
 
 x86_64-conda-linux-gnu/
 aarch64-conda-linux-gnu/
+
+# -----------------------
+# Build and Distribution
+# -----------------------
+build/
+dist/
+*.egg-info/
+*.egg
+*.whl
+*.tar.gz
+*.zip
+*.rar
+
+# -----------------------
+# Local Development
+# -----------------------
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+*.db-journal
+
+# -----------------------
+# Environment Variables
+# -----------------------
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# -----------------------
+# Cache and Temporary Files
+# -----------------------
+.cache/
+.temp/
+.tmp/
+*.cache
+*.temp
+*.tmp
+node_modules/
+.npm/
+.yarn/
+.pnp/
+.pnp.js
+
+# -----------------------
+# Documentation
+# -----------------------
+docs/_build/
+site/
+docs/api/
+
+# -----------------------
+# System Files
+# -----------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# -----------------------
+# Backup Files
+# -----------------------
+*~
+*.bak
+*.backup
+*.old
+*.swp
+*.swo
+*#
+
+# -----------------------
+# Large Media Files
+# -----------------------
+*.mp4
+*.tiff
+*.avi
+*.flv
+*.mov
+*.wmv
+*.mp3
+*.wav
+*.flac
+*.aac
+*.ogg
+*.wma
+
+# -----------------------
+# Machine Learning
+# -----------------------
+*.h5
+*.pkl
+*.model
+*.joblib
+*.npy
+*.npz
+wandb/
+mlruns/
+runs/
 
