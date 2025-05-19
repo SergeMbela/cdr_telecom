@@ -250,6 +250,7 @@ runs/
 *.vdi
 *.qcow2
 *.box
+*.png
 
 # -----------------------
 # Bin Directory
