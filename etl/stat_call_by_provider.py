@@ -1,4 +1,3 @@
-import pyodbc
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,6 +6,7 @@ import os
 import yaml
 import logging
 from datetime import datetime
+from sqlalchemy import create_engine, text
 
 # Load configuration
 with open('config.yml', 'r') as file:
@@ -26,12 +26,12 @@ logging.basicConfig(
 load_dotenv()
 
 def get_connection():
-    """Establish database connection"""
+    """Establish database connection using SQLAlchemy"""
     try:
-        conn_str = f'DRIVER={os.getenv("DB_DRIVER")};SERVER={os.getenv("DB_SERVER")};DATABASE={os.getenv("DB_NAME")};UID={os.getenv("DB_USER")};PWD={os.getenv("DB_PASSWORD")};Encrypt=yes;TrustServerCertificate=yes'
-        conn = pyodbc.connect(conn_str)
+        conn_str = f"mssql+pyodbc://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_SERVER')}/{os.getenv('DB_NAME')}?driver={os.getenv('DB_DRIVER')}&TrustServerCertificate=yes"
+        engine = create_engine(conn_str)
         logging.info("Database connection established")
-        return conn
+        return engine
     except Exception as e:
         logging.error(f"Database connection failed: {str(e)}")
         raise
@@ -44,26 +44,29 @@ def get_operator_name(code):
 def generate_statistics():
     """Generate call statistics by operator"""
     try:
-        conn = get_connection()
-        cursor = conn.cursor()
+        engine = get_connection()
 
         # Query to get statistics
-        query = f"""
+        query = text("""
         SELECT 
             operator_code_emission as operator,
-            COUNT(*) as total_calls,
-            SUM(CASE WHEN type = 'voice' THEN 1 ELSE 0 END) as voice_calls,
-            SUM(CASE WHEN type = 'sms' THEN 1 ELSE 0 END) as sms_calls,
-            SUM(CASE WHEN type = 'data' THEN 1 ELSE 0 END) as data_calls,
-            AVG(duration) as avg_duration,
-            SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as completion_rate
-        FROM {config['database']['table_name']}
+            CAST(COUNT(*) AS BIGINT) as total_calls,
+            CAST(SUM(CASE WHEN type = 'voice' THEN 1 ELSE 0 END) AS BIGINT) as voice_calls,
+            CAST(SUM(CASE WHEN type = 'sms' THEN 1 ELSE 0 END) AS BIGINT) as sms_calls,
+            CAST(SUM(CASE WHEN type = 'data' THEN 1 ELSE 0 END) AS BIGINT) as data_calls,
+            CAST(AVG(CAST(duration AS DECIMAL(18,2))) AS DECIMAL(18,2)) as avg_duration,
+            CAST(
+                CAST(SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS DECIMAL(18,2)) * 100.0 / 
+                NULLIF(CAST(COUNT(*) AS DECIMAL(18,2)), 0) 
+                AS DECIMAL(18,2)
+            ) as completion_rate
+        FROM [cdr_telecom].[dbo].[cdr_data]
         GROUP BY operator_code_emission
         ORDER BY total_calls DESC
-        """
+        """)
 
         # Execute query and convert to DataFrame
-        df = pd.read_sql(query, conn)
+        df = pd.read_sql(query, engine)
         
         # Add operator names
         df['operator_name'] = df['operator'].apply(get_operator_name)
@@ -80,7 +83,7 @@ def generate_statistics():
         logging.info(f"Statistics saved to {csv_file}")
 
         # Create visualizations
-        plt.style.use('seaborn')
+        plt.style.use('default')  # Use default style instead of seaborn
         
         # 1. Total Calls by Operator
         plt.figure(figsize=(12, 6))
@@ -89,9 +92,11 @@ def generate_statistics():
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.savefig(f'statistics/total_calls_{timestamp}.png')
+        plt.close()  # Close the figure to free memory
         
         # 2. Call Types Distribution
         plt.figure(figsize=(12, 6))
+     
         df_melted = pd.melt(df, 
                            id_vars=['operator_name'],
                            value_vars=['voice_calls', 'sms_calls', 'data_calls'],
@@ -102,6 +107,7 @@ def generate_statistics():
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.savefig(f'statistics/call_types_{timestamp}.png')
+        plt.close()  # Close the figure to free memory
         
         # 3. Average Duration
         plt.figure(figsize=(12, 6))
@@ -110,6 +116,7 @@ def generate_statistics():
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.savefig(f'statistics/avg_duration_{timestamp}.png')
+        plt.close()  # Close the figure to free memory
         
         # 4. Completion Rate
         plt.figure(figsize=(12, 6))
@@ -118,6 +125,7 @@ def generate_statistics():
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.savefig(f'statistics/completion_rate_{timestamp}.png')
+        plt.close()  # Close the figure to free memory
 
         logging.info("Statistics and visualizations generated successfully")
         
@@ -131,8 +139,8 @@ def generate_statistics():
         logging.error(f"Error generating statistics: {str(e)}")
         raise
     finally:
-        if 'conn' in locals():
-            conn.close()
+        if 'engine' in locals():
+            engine.dispose()
             logging.info("Database connection closed")
 
 if __name__ == "__main__":

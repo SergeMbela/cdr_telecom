@@ -1,0 +1,4 @@
+status,count,percentage,avg_duration
+completed,219498,48.78,1802.35
+missed,219131,48.7,1799.74
+failed,11371,2.53,0.0

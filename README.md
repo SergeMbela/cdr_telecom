@@ -34,6 +34,20 @@ GMAIL_APP_PASSWORD=your_app_password
 RECIPIENT_EMAIL=recipient@email.com
 ```
 
+### Finding SQL Server IP Address in Docker
+
+If you're running SQL Server in Docker, you can find its IP address using these commands:
+
+```bash
+# List running Docker containers
+docker ps | grep sql
+
+# Get the IP address of the SQL Server container
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sqlserver_container
+```
+
+The output will show you the container's IP address (e.g., `172.17.0.2`). You can use this IP address in your `.env` file for the `DB_SERVER` variable.
+
 2. Create a `config.yml` file with the following structure:
 ```yaml
 logging:
@@ -166,4 +180,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
